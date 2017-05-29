@@ -1,0 +1,25 @@
+service: sls-shim
+package:
+  artifact: handler.zip
+provider:
+  name: aws
+  runtime: python2.7
+  stage: ${env:ENV}
+  region: ${env:AWS_DEFAULT_REGION}
+  profile: ${env:AWS_PROFILE}
+functions:
+  raw:
+    handler: handler.HandleRaw
+    events:
+      - http: POST raw
+  http:
+    handler: handler.HandleHTTP
+    events:
+      - http: POST http
+#  kinesis:
+#    handler: handler.HandleKinesis
+#    events:
+#      - stream:
+#          type: kinesis
+#          arn:
+#            Fn::ImportValue: ${env:KINESIS_EXPORT_ARN}
